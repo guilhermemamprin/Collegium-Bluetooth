@@ -118,7 +118,7 @@ public class BluetoothChatService {
             mConnectedThread = null;
         }
 
-        setState(STATE_LISTEN);
+
 
         // Start the thread to listen on a BluetoothServerSocket
         if (mSecureAcceptThread == null) {
@@ -157,7 +157,7 @@ public class BluetoothChatService {
         // Start the thread to connect with the given device
         mConnectThread = new ConnectThread(device, secure);
         mConnectThread.start();
-        setState(STATE_CONNECTING);
+
     }
 
     /**
@@ -203,7 +203,7 @@ public class BluetoothChatService {
         msg.setData(bundle);
         mHandler.sendMessage(msg);
 
-        setState(STATE_CONNECTED);
+
     }
 
     /**
@@ -309,6 +309,7 @@ public class BluetoothChatService {
                 Log.e(TAG, "Socket Type: " + mSocketType + "listen() failed", e);
             }
             mmServerSocket = tmp;
+            setState(STATE_LISTEN);
         }
 
         public void run() {
@@ -396,6 +397,7 @@ public class BluetoothChatService {
                 Log.e(TAG, "Socket Type: " + mSocketType + "create() failed", e);
             }
             mmSocket = tmp;
+            setState(STATE_CONNECTING);
         }
 
         public void run() {
@@ -465,6 +467,7 @@ public class BluetoothChatService {
 
             mmInStream = tmpIn;
             mmOutStream = tmpOut;
+            setState(STATE_CONNECTED);
         }
 
         public void run() {
